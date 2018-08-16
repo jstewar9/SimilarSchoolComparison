@@ -1,18 +1,17 @@
-# Import CDE enrollment data files from 2007-2008 school year and beyond into a data frame
-
-# # Clear console
-# cat("\014") 
+# Import California Department of Education (CDE) enrollment data files
 # 
-# # Clear memory
-# rm(list=ls())
-# gc()
+# Date files and file specification available here: https://www.cde.ca.gov/ds/sd/sd/filesenr.asp
+# 
+# This script will work for enrollment files from 2007-08 school year and later
+#
+# This script imports enrollment data files from individual school years and combines them into a single data frame
 
 # Install/load packages
 if (!require("pacman")) install.packages("pacman")
 pacman::p_load(tidyverse, tidyr, dplyr)
 
 # Set working directory
-setwd("C:/Data/State Data Files/Enrollment")
+setwd("C:/Github/SimilarSchoolComparison/Data/Enrollment")
 
 # Create list to store data frames
 l_dataframes <- list()
@@ -21,7 +20,6 @@ l_dataframes <- list()
 l_files <- dir()
 
 # Import each file into a data frame
-
 for (i in 1:length(l_files)) {
   
   l_dataframes[[i]] <- l_files[i] %>%
@@ -46,7 +44,7 @@ gc()
 # Add variables
 df_enr <- df_enr %>%
             
-            # Add school year column
+            # Add school year variable
             mutate(SCHOOL_YEAR = substring(FILE_NAME
                                            , 5
                                            , 8)) %>%
@@ -65,7 +63,3 @@ df_enr <- df_enr %>%
               , ETHNIC == "6" ~ "African American"
               , ETHNIC == "7" ~ "White"
               , ETHNIC == "9" ~ "Two or More Races"))
-
-          
-        
-
